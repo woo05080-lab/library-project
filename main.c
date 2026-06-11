@@ -1,16 +1,16 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "../include/library.h"
-#include <direct.h>   // [정리] _mkdir 사용 위해 추가 (Windows)
+#include <direct.h>   
 
-BookNode*        bookHead        = NULL;   /* 연결 리스트 헤드 포인터 */
-BSTNode*         bstRoot         = NULL;   /* BST 루트 노드 */
-ReservationQueue reservationQueue;         /* 예약 큐 */
-int              nextBookId      = 1;      /* 다음 도서 ID (자동 증가) */
+BookNode*        bookHead        = NULL;  
+BSTNode*         bstRoot         = NULL;  
+ReservationQueue reservationQueue;        
+int              nextBookId      = 1;     
 
 int main(void) {
     initQueue(&reservationQueue);
 
-    _mkdir("data");   // [정리] system("mkdir -p data") 대체 → 오류 문구 사라짐
+    _mkdir("data");  
 
     loadBooks();
     loadRentals();
@@ -56,5 +56,4 @@ int main(void) {
                 printf("[오류] 잘못된 메뉴입니다. 0~7 사이의 숫자를 입력하세요.\n\n");
         }
     }
-    // [정리] 여기 있던 마지막 return 0; 삭제 (while(1) 때문에 도달 불가)
 }
