@@ -1,33 +1,20 @@
-/*
- * queue.c - ¿¹¾à Å¥(Queue) ¹× ´ë¿©/¹Ý³³ ·ÎÁ÷ (¹ÚÇö¿ì ´ã´ç)
- *
- * [Å¥ ±¸Á¶]
- *   - ¿¬°á ¸®½ºÆ® ±â¹Ý Å¥ (¹è¿­ Å©±â Á¦ÇÑ ¾øÀ½)
- *   - front: °¡Àå ¸ÕÀú ¿¹¾àÇÑ »ç¶÷ (dequeue À§Ä¡)
- *   - rear : °¡Àå ÃÖ±Ù¿¡ ¿¹¾àÇÑ »ç¶÷ (enqueue À§Ä¡)
- *   - enqueue O(1) / dequeue O(1)
- */
 #define _CRT_SECURE_NO_WARNINGS
 #include "../include/library.h"
 
-
-/* Å¥ ÃÊ±âÈ­ */
+/* í ì´ˆê¸°í™” */
 void initQueue(ReservationQueue* q) {
     q->front = NULL;
     q->rear  = NULL;
     q->size  = 0;
 }
 
-/*
- * enqueue() - ¿¹¾à ´ë±â¿­¿¡ Ãß°¡
- *   ÀÌ¹Ì ÇØ´ç µµ¼­¿¡ ¿¹¾àÇÑ È¸¿øÀº Áßº¹ ¿¹¾à ºÒ°¡
- */
+/* ì˜ˆì•½ ëŒ€ê¸°ì—´ì— ì¶”ê°€ */
 int enqueue(ReservationQueue* q, int bookId, int memberId, const char* memberName) {
-    /* Áßº¹ ¿¹¾à Ã¼Å© */
+    /* ì¤‘ë³µ ì˜ˆì•½ ì²´í¬ */
     QueueNode* cur = q->front;
     while (cur) {
         if (cur->bookId == bookId && cur->memberId == memberId) {
-            printf("[¿À·ù] È¸¿ø ID %d ´Â ÀÌ¹Ì µµ¼­ ID %d ¸¦ ¿¹¾àÇß½À´Ï´Ù.\n",
+            printf("[ì˜¤ë¥˜] íšŒì› ID %d ëŠ” ì´ë¯¸ ë„ì„œ ID %d ë¥¼ ì˜ˆì•½í–ˆìŠµë‹ˆë‹¤.\n",
                    memberId, bookId);
             return 0;
         }
@@ -36,7 +23,7 @@ int enqueue(ReservationQueue* q, int bookId, int memberId, const char* memberNam
 
     QueueNode* node = (QueueNode*)malloc(sizeof(QueueNode));
     if (!node) {
-        fprintf(stderr, "[¿À·ù] Å¥ ¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ\n");
+        fprintf(stderr, "[ì˜¤ë¥˜] í ë©”ëª¨ë¦¬ í• ë‹¹ ì‹¤íŒ¨\n");
         return 0;
     }
     node->bookId   = bookId;
@@ -56,34 +43,19 @@ int enqueue(ReservationQueue* q, int bookId, int memberId, const char* memberNam
     return 1;
 }
 
-/*
- * dequeue() - ¿¹¾à ´ë±â¿­ÀÇ ¾Õ¿¡¼­ ²¨³»±â
- *   ¹ÝÈ¯µÈ Æ÷ÀÎÅÍ´Â È£ÃâÀÚ°¡ free() ÇØ¾ß ÇÔ
- */
-QueueNode* dequeue(ReservationQueue* q) {
-    if (!q->front) return NULL;
-
-    QueueNode* node = q->front;
-    q->front        = q->front->next;
-    if (!q->front) q->rear = NULL;
-    node->next = NULL;
-    q->size--;
-    return node;
-}
-
-/* ¿¹¾à ´ë±â¿­ ÀüÃ¼ Ãâ·Â */
+/* ì˜ˆì•½ ëŒ€ê¸°ì—´ ì „ì²´ ì¶œë ¥ */
 void printQueue(ReservationQueue* q) {
     printDivider();
-    printf("  [¿¹¾à ´ë±â¿­] (ÃÑ %d °Ç)\n", q->size);
+    printf("  [ì˜ˆì•½ ëŒ€ê¸°ì—´] (ì´ %d ê±´)\n", q->size);
     printDivider();
 
     if (q->size == 0) {
-        printf("  ¿¹¾à ´ë±â ÁßÀÎ Ç×¸ñÀÌ ¾ø½À´Ï´Ù.\n");
+        printf("  ì˜ˆì•½ ëŒ€ê¸° ì¤‘ì¸ í•­ëª©ì´ ì—†ìŠµë‹ˆë‹¤.\n");
         printDivider();
         return;
     }
 
-    printf("  %-5s %-8s %-15s %-8s\n", "¼ø¼­", "µµ¼­ ID", "¿¹¾àÀÚ", "È¸¿ø ID");
+    printf("  %-5s %-8s %-15s %-8s\n", "ìˆœì„œ", "ë„ì„œ ID", "ì˜ˆì•½ìž", "íšŒì› ID");
     printf("  %-5s %-8s %-15s %-8s\n",
            "-----", "--------", "---------------", "--------");
 
@@ -98,7 +70,7 @@ void printQueue(ReservationQueue* q) {
     printDivider();
 }
 
-/* Å¥ ¸Þ¸ð¸® ÇØÁ¦ */
+/* í ë©”ëª¨ë¦¬ í•´ì œ */
 void freeQueue(ReservationQueue* q) {
     QueueNode* cur = q->front;
     while (cur) {
@@ -111,21 +83,10 @@ void freeQueue(ReservationQueue* q) {
     q->size  = 0;
 }
 
-/* ============================================================
- *  ´ë¿© / ¹Ý³³ ·ÎÁ÷
- * ============================================================ */
-
-/*
- * rentBook() - µµ¼­ ´ë¿©
- *   1. BST·Î O(log N) µµ¼­ °Ë»ö
- *   2. ´ë¿© °¡´ÉÇÏ¸é »óÅÂ º¯°æ
- *   3. ´ë¿© ºÒ°¡´ÉÇÏ¸é ¿¹¾à Å¥¿¡ Ãß°¡
- */
 int rentBook(int bookId, int memberId, const char* memberName) {
-    /* BST·Î ºü¸¥ °Ë»ö */
     BSTNode* bstNode = bstSearch(bstRoot, bookId);
     if (!bstNode) {
-        printf("[¿À·ù] µµ¼­ ID %d ¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.\n", bookId);
+        printf("[ì˜¤ë¥˜] ë„ì„œ ID %d ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n", bookId);
         return 0;
     }
 
@@ -133,17 +94,17 @@ int rentBook(int bookId, int memberId, const char* memberName) {
 
     if (book->available) {
         book->available = 0;
-        printf("[´ë¿© ¿Ï·á] µµ¼­ ID: %d | Á¦¸ñ: \"%s\" | ´ë¿©ÀÚ: %s (È¸¿ø ID: %d)\n",
+        printf("[ëŒ€ì—¬ ì™„ë£Œ] ë„ì„œ ID: %d | ì œëª©: \"%s\" | ëŒ€ì—¬ìž: %s (íšŒì› ID: %d)\n",
                bookId, book->title, memberName, memberId);
         return 1;
     } else {
-        printf("[´ë¿© ºÒ°¡] µµ¼­ ID %d ´Â ÇöÀç ´ë¿© ÁßÀÔ´Ï´Ù.\n", bookId);
-        printf("           ¿¹¾à ´ë±â¿­¿¡ Ãß°¡ÇÏ½Ã°Ú½À´Ï±î? (1=¿¹ / 0=¾Æ´Ï¿À): ");
+        printf("[ëŒ€ì—¬ ë¶ˆê°€] ë„ì„œ ID %d ëŠ” í˜„ìž¬ ëŒ€ì—¬ ì¤‘ìž…ë‹ˆë‹¤.\n", bookId);
+        printf("           ì˜ˆì•½ ëŒ€ê¸°ì—´ì— ì¶”ê°€í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (1=ì˜ˆ / 0=ì•„ë‹ˆì˜¤): ");
         int yn;
         if (scanf("%d", &yn) == 1 && yn == 1) {
             clearInputBuffer();
             if (enqueue(&reservationQueue, bookId, memberId, memberName)) {
-                printf("[¿¹¾à ¿Ï·á] ´ë±â ¼ø¼­: %d¹ø\n", reservationQueue.size);
+                printf("[ì˜ˆì•½ ì™„ë£Œ] ëŒ€ê¸° ìˆœì„œ: %dë²ˆ\n", reservationQueue.size);
             }
         } else {
             clearInputBuffer();
@@ -152,43 +113,36 @@ int rentBook(int bookId, int memberId, const char* memberName) {
     }
 }
 
-/*
- * returnBook() - µµ¼­ ¹Ý³³
- *   1. BST·Î µµ¼­ °Ë»ö
- *   2. »óÅÂ¸¦ ´ë¿© °¡´ÉÀ¸·Î º¯°æ
- *   3. ÇØ´ç µµ¼­ ¿¹¾àÀÚ°¡ ÀÖÀ¸¸é Å¥¿¡¼­ dequeueÇÏ¿© ÀÚµ¿ ´ë¿©
- */
 int returnBook(int bookId) {
     BSTNode* bstNode = bstSearch(bstRoot, bookId);
     if (!bstNode) {
-        printf("[¿À·ù] µµ¼­ ID %d ¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.\n", bookId);
+        printf("[ì˜¤ë¥˜] ë„ì„œ ID %d ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n", bookId);
         return 0;
     }
 
     BookNode* book = bstNode->bookRef;
 
     if (book->available) {
-        printf("[¿À·ù] µµ¼­ ID %d ´Â ´ë¿© ÁßÀÌ ¾Æ´Õ´Ï´Ù.\n", bookId);
+        printf("[ì˜¤ë¥˜] ë„ì„œ ID %d ëŠ” ëŒ€ì—¬ ì¤‘ì´ ì•„ë‹™ë‹ˆë‹¤.\n", bookId);
         return 0;
     }
 
     book->available = 1;
-    printf("[¹Ý³³ ¿Ï·á] µµ¼­ ID: %d | Á¦¸ñ: \"%s\"\n", bookId, book->title);
+    printf("[ë°˜ë‚© ì™„ë£Œ] ë„ì„œ ID: %d | ì œëª©: \"%s\"\n", bookId, book->title);
 
-    /* ÇØ´ç µµ¼­¿¡ ´ëÇÑ ¿¹¾àÀÚ°¡ ÀÖÀ¸¸é ÀÚµ¿ ´ë¿© Ã³¸® */
+    /* ìžë™ ëŒ€ì—¬ ì²˜ë¦¬ ê¸°ëŠ¥ */
     QueueNode* cur  = reservationQueue.front;
     QueueNode* prev = NULL;
 
     while (cur) {
         if (cur->bookId == bookId) {
-            /* Å¥¿¡¼­ ÇØ´ç ³ëµå ²¨³»±â */
             if (prev) prev->next = cur->next;
             else      reservationQueue.front = cur->next;
             if (cur == reservationQueue.rear) reservationQueue.rear = prev;
             reservationQueue.size--;
 
             book->available = 0;
-            printf("[ÀÚµ¿ ´ë¿©] ¿¹¾àÀÚ \"%s\" (È¸¿ø ID: %d) ¿¡°Ô ÀÚµ¿À¸·Î ´ë¿©µÇ¾ú½À´Ï´Ù.\n",
+            printf("[ìžë™ ëŒ€ì—¬] ì˜ˆì•½ìž \"%s\" (íšŒì› ID: %d) ì—ê²Œ ìžë™ìœ¼ë¡œ ëŒ€ì—¬ë˜ì—ˆìŠµë‹ˆë‹¤.\n",
                    cur->memberName, cur->memberId);
             free(cur);
             return 1;
